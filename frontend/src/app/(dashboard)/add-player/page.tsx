@@ -11,7 +11,7 @@ import {
 import { useState } from "react";
 import { useRouter } from "next/navigation"; // Add router import
 
-const ErrorPageFixing = () => {
+const AddPlayerPage = () => {
   const router = useRouter(); // Initialize router
   const [playerName, setPlayerName] = useState("");
   const [playerPosition, setPlayerPosition] = useState("");
@@ -26,7 +26,7 @@ const ErrorPageFixing = () => {
     
     try {
       // Use backend API URL
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9090';
       const response = await fetch(`${apiUrl}/api/players`, {
         method: "POST",
         headers: {
@@ -128,4 +128,4 @@ const ErrorPageFixing = () => {
   );
 };
 
-export default ErrorPageFixing;
+export default AddPlayerPage;

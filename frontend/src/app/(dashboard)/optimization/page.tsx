@@ -16,14 +16,26 @@ export default function OptimizationPage() {
 
   // use effect to fetch the data from optimize api
   useEffect(() => {
+    const abortController = new AbortController();
+    let timeoutId: NodeJS.Timeout;
+
     const fetchData = async () => {
       try {
         setIsLoading(true);
         setError(""); // Clear any previous errors
         
         // Use backend API URL
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
-        const response = await fetch(`${apiUrl}/api/optimize`);
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9090';
+        
+        // Set a timeout for the request (30 seconds)
+        timeoutId = setTimeout(() => abortController.abort(), 30000);
+        
+        const response = await fetch(`${apiUrl}/api/optimize`, {
+          signal: abortController.signal,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -33,13 +45,25 @@ export default function OptimizationPage() {
         console.log("API Response:", data); // Debug log to see what we're getting
         setOptimization(data);
       } catch (error) {
+        if (error instanceof Error && error.name === 'AbortError') {
+          console.log('Fetch aborted or timed out');
+          setError('Request timed out. The optimization endpoint is taking too long to respond.');
+          return;
+        }
         console.error("Failed to fetch optimization data:", error);
         setError(`Failed to load optimization data: ${error instanceof Error ? error.message : 'Unknown error'}`);
       } finally {
+        clearTimeout(timeoutId);
         setIsLoading(false);
       }
     };
+    
     fetchData();
+
+    return () => {
+      clearTimeout(timeoutId);
+      abortController.abort();
+    };
   }, []);
 
   return (

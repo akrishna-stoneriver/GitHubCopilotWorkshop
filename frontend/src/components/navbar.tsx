@@ -1,4 +1,6 @@
 import { MobileSidebar } from "./mobile-sidebar";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export const Navbar = () => {
   return (
@@ -12,7 +14,14 @@ export const Navbar = () => {
           Performance!
         </p>
       </div>
-      <MobileSidebar />
+      <div className="flex items-center gap-4">
+        <Link href="/login" className="hidden md:block">
+          <Button variant="outline" className="bg-white hover:bg-gray-50">
+            Login
+          </Button>
+        </Link>
+        <MobileSidebar />
+      </div>
     </nav>
   );
 };

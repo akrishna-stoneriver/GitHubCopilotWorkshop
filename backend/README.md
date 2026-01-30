@@ -73,6 +73,8 @@ This backend provides RESTful API endpoints for the NBA Sports Application, incl
 
 ### Player Information
 - **GET** `/api/player-info` - Get filtered player information (id, name, team, weight, height, position)
+### Player Stats
+- **GET** `/api/player-stats` - Get top 10 player statistics (name, team, points, rebounds, assists)
 
 ### Coaches
 - **GET** `/api/coaches` - Get all coaches
@@ -93,6 +95,7 @@ Data is stored in JSON files located in the `data/` directory:
 - `nba-games.json` - NBA game results
 - `stadiums.json` - Stadium information
 - `player-info.json` - Player information
+- `player-stats.json` - Player statistics
 - `coaches.json` - Coach data
 
 ## CORS Configuration

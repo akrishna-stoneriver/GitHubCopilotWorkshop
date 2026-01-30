@@ -1,0 +1,66 @@
+{
+  "runAt": "2026-01-30",
+  "baseUrl": "http://localhost:3000",
+  "steps": [
+    {
+      "id": 1,
+      "name": "Navigate to home",
+      "url": "http://localhost:3000/",
+      "status": "pass"
+    },
+    {
+      "id": 2,
+      "name": "Click NBA Scores",
+      "url": "http://localhost:3000/nba-scores",
+      "status": "pass"
+    },
+    {
+      "id": 3,
+      "name": "Verify game scores are displayed",
+      "assertion": "Found score pattern \\"<num> - <num>\\" at least once",
+      "observed": {
+        "scoreCount": 6,
+        "sample": [
+          "112 - 108",
+          "95 - 103",
+          "89 - 97"
+        ]
+      },
+      "status": "pass"
+    },
+    {
+      "id": 4,
+      "name": "Click Stadiums",
+      "url": "http://localhost:3000/stadiums",
+      "status": "pass"
+    },
+    {
+      "id": 5,
+      "name": "Verify stadium cards are rendered",
+      "assertion": "At least 3 stadium cards and expected titles present",
+      "observed": {
+        "cardCount": 3,
+        "titles": [
+          "Madison Square Garden",
+          "Crypto.com Arena",
+          "TD Garden"
+        ]
+      },
+      "status": "pass"
+    },
+    {
+      "id": 6,
+      "name": "Screenshots",
+      "status": "pass",
+      "artifacts": {
+        "home": ".playwright-mcp/home.png",
+        "nbaScores": ".playwright-mcp/nba-scores.png",
+        "stadiums": ".playwright-mcp/stadiums.png"
+      }
+    }
+  ],
+  "overall": "pass",
+  "notes": [
+    "Browser console warning: Image with src \"/github-copilot-main.jpeg\" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: \"auto\"' or 'height: \"auto\"' to maintain the aspect ratio."
+  ]
+}

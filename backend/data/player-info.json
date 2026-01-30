@@ -96,5 +96,33 @@
       "assistsPerGame": 0.0,
       "reboundsPerGame": 0.0
     }
+  },
+  {
+    "id": 8,
+    "name": "AK",
+    "position": "KK",
+    "team": "NK",
+    "height": "N/A",
+    "weight": "N/A",
+    "birthDate": "N/A",
+    "stats": {
+      "pointsPerGame": 0.0,
+      "assistsPerGame": 0.0,
+      "reboundsPerGame": 0.0
+    }
+  },
+  {
+    "id": 9,
+    "name": "DK",
+    "position": "Left",
+    "team": "Tigers",
+    "height": "N/A",
+    "weight": "N/A",
+    "birthDate": "N/A",
+    "stats": {
+      "pointsPerGame": 0.0,
+      "assistsPerGame": 0.0,
+      "reboundsPerGame": 0.0
+    }
   }
 ]

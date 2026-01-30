@@ -59,6 +59,20 @@ def get_stadiums():
         print(f'Error serving stadiums data: {e}')
         return jsonify({'error': 'Failed to load stadiums data. Please try again later.'}), 500
 
+# Teams data
+@app.route('/api/teams', methods=['GET'])
+def get_teams():
+    """Get NBA teams information"""
+    try:
+        teams = load_json_file('teams.json')
+        if teams is None:
+            return jsonify({'error': 'Failed to load teams data'}), 500
+
+        return jsonify(teams), 200
+    except Exception as e:
+        print(f'Error serving teams data: {e}')
+        return jsonify({'error': 'Failed to load teams data. Please try again later.'}), 500
+
 # Player info data
 @app.route('/api/player-info', methods=['GET'])
 def get_player_info():
@@ -86,10 +100,24 @@ def get_player_info():
         print(f'Error fetching player info: {e}')
         return jsonify({'error': 'Failed to fetch player information'}), 500
 
+# Player stats data
+@app.route('/api/player-stats', methods=['GET'])
+def get_player_stats():
+    """Get NBA player stats information"""
+    try:
+        player_stats = load_json_file('player-stats.json')
+        if player_stats is None:
+            return jsonify({'error': 'Failed to load player stats data'}), 500
+
+        return jsonify(player_stats), 200
+    except Exception as e:
+        print(f'Error fetching player stats: {e}')
+        return jsonify({'error': 'Failed to fetch player stats'}), 500
+
 # Players API - Create player endpoint
 # TODO: This endpoint is intentionally broken for Task 1.7 workshop exercise
 # Students should use GitHub Copilot to identify and fix this issue
-@app.route('/api/player', methods=['POST'])  # INTENTIONAL ERROR: Wrong route name
+@app.route('/api/players', methods=['POST'])  # INTENTIONAL ERROR: Wrong route name
 def create_player():
     """Create a new player"""
     try:
@@ -248,10 +276,12 @@ def delete_coach(coach_id):
 # Optimize endpoint - intentionally slow for demonstration
 @app.route('/api/optimize', methods=['GET'])
 def optimize():
-    """Optimize endpoint for token counting demonstration - INTENTIONALLY SLOW"""
+    """Optimize endpoint for token counting demonstration - Improved Performance"""
+    import functools
+
     # Track start time for execution measurement
     start_time = time.time()
-    
+
     # Intentionally large prompt for demonstration purposes
     prompt = """
 Imagine an ultra-comprehensive NBA game-tracking app, crafted specifically for die-hard fans, fantasy sports players, and analytics enthusiasts. This app goes far beyond simple score updates, delivering real-time, in-depth coverage of every NBA game with a fully immersive experience that combines live data, interactive features, and advanced analytics.
@@ -276,42 +306,30 @@ To make the experience even more personal, the app includes a "Customize Experie
 
 Additionally, the app's "League Trends" section allows users to explore league-wide statistics and trends, such as the season's leaders in different categories, emerging player trends, and comparisons of team strategies. A unique "Trade Tracker" tool provides information on potential trades, showing rumors and projections on how player moves could impact teams and the league landscape.
     """
-    
-    # INTENTIONALLY INEFFICIENT RECURSIVE FUNCTIONS for demonstration purposes
-    # These are designed to be slow and should be optimized by students
-    
-    def inefficient_fibonacci(n):
-        """Highly inefficient recursive fibonacci - no memoization"""
+
+    # Optimized Fibonacci with memoization
+    @functools.lru_cache(maxsize=None)
+    def optimized_fibonacci(n):
         if n <= 1:
             return n
-        return inefficient_fibonacci(n - 1) + inefficient_fibonacci(n - 2)
-    
-    def inefficient_factorial(n):
-        """Inefficient recursive factorial with unnecessary string operations"""
+        return optimized_fibonacci(n - 1) + optimized_fibonacci(n - 2)
+
+    # Optimized factorial without unnecessary string operations
+    def optimized_factorial(n):
         if n <= 1:
             return 1
-        # Adding unnecessary string concatenation to slow it down
-        temp = str(n) * 100  # Create large string
-        temp = temp[:10]  # Use only small part (wasteful)
-        return n * inefficient_factorial(n - 1)
-    
-    # Execute inefficient computations
-    # Calculate fibonacci(30) - this takes a few seconds but won't timeout
-    fib_result = inefficient_fibonacci(36)
-    
-    # Calculate factorial with string operations - reduced to avoid timeout
-    factorial_result = inefficient_factorial(500)
-    
-    # Do some unnecessary work with the prompt
-    for char in prompt[:100]:
-        temp_list = [char] * 1000  # Create unnecessary lists
-    
-    # Calculate execution time in seconds
-    execution_time_seconds = time.time() - start_time
-    
+        return n * optimized_factorial(n - 1)
+
+    # Execute optimized computations
+    fib_result = optimized_fibonacci(36)
+    factorial_result = optimized_factorial(500)
+
     # Simplified token count (approximation: ~4 chars per token)
     token_count = len(prompt) // 4
-    
+
+    # Calculate execution time in seconds
+    execution_time_seconds = time.time() - start_time
+
     return jsonify({
         'prompt': prompt,
         'tokenCount': token_count,
@@ -353,4 +371,4 @@ def internal_error(error):
 
 if __name__ == '__main__':
     # Run the Flask application
-    app.run(debug=True, host='0.0.0.0', port=8080)
+    app.run(debug=True, host='0.0.0.0', port=9090)
